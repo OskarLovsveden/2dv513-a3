@@ -8,38 +8,38 @@ const sqlArr = [
         name VARCHAR(50) UNIQUE NOT NULL, 
         release_date VARCHAR(10) NOT NULL, 
         id INT, 
-        PRIMARY KEY (id))`,
+        PRIMARY KEY (id)) ENGINE=INNODB`,
 	`CREATE TABLE IF NOT EXISTS planet (
         name VARCHAR(50), 
         diameter VARCHAR(50) NOT NULL, 
         population VARCHAR(50) NOT NULL, 
-        PRIMARY KEY (name))`,
+        PRIMARY KEY (name)) ENGINE=INNODB`,
 	`CREATE TABLE IF NOT EXISTS species (
         name VARCHAR(50), 
         classification VARCHAR(50) NOT NULL, 
         home_planet VARCHAR(50) NOT NULL, 
         PRIMARY KEY (name), 
-        FOREIGN KEY (home_planet) REFERENCES planet(name))`,
+        FOREIGN KEY (home_planet) REFERENCES planet(name)) ENGINE=INNODB`,
 	`CREATE TABLE IF NOT EXISTS movie_character (
         name VARCHAR(50),
         birth_planet VARCHAR(50),
         species VARCHAR(50),
         PRIMARY KEY (name),
         FOREIGN KEY (birth_planet) REFERENCES planet(name),
-	    FOREIGN KEY (species) REFERENCES species(name))`,
+	    FOREIGN KEY (species) REFERENCES species(name)) ENGINE=INNODB`,
 	`CREATE TABLE IF NOT EXISTS appears_in (
 	    character_name VARCHAR(50),
 	    movie_id INT,
 	    FOREIGN KEY (character_name) REFERENCES movie_character(name),
-	    FOREIGN KEY (movie_id) REFERENCES movie(id))`
+	    FOREIGN KEY (movie_id) REFERENCES movie(id)) ENGINE=INNODB`
 ]
 
 export const importData = async () => {
-	// createTable(sqlArr)
+	createTable(sqlArr)
 
-	const people = await getPeople()
-	console.table(people)
-	console.log('Done with you people')
+	const films = await getFilms()
+	console.table(films)
+	console.log('Done wiz ze filmz')
 
 	const planets = await getPlanets()
 	console.table(planets)
@@ -49,16 +49,56 @@ export const importData = async () => {
 	console.table(species)
 	console.log('That was nothing speciesal')
 
-	const films = await getFilms()
-	console.table(films)
-	console.log('Done wiz ze filmz')
+	const people = await getPeople()
+	console.table(people)
+	console.log('Done with you people')
 
 	const appearsIn = getAppearsIn(people, films)
 	console.table(appearsIn)
 	console.log('I now know that Luke Skywalker was in Star Wars')
 
 	// PUT IN DB :^)
-	putInDB(people, planets, species, films, appearsIn)
+	putInDB(films, planets, species, people, appearsIn)
+}
+
+const putInDB = (films, planets, species, people, appearsIn) => {
+	const movieSQL = 'INSERT INTO movie (name, release_date, id) VALUES ?'
+	films = films.map(f => [f[0], f[1], f[2]])
+
+	const planetSQL = 'INSERT INTO planet (name, diameter, population) VALUES ?'
+
+	const speciesSQL =
+		'INSERT INTO species (name, classification, home_planet) VALUES ?'
+
+	const charSQL =
+		'INSERT INTO movie_character (name, birth_planet, species) VALUES ?'
+	people = people.map(f => [f[0], f[1], f[2]])
+	console.table(people)
+
+	const aiSQL = 'INSERT INTO appears_in (character_name, movie_id) VALUES ?'
+
+	// WARNING! RUN AT OWN RISK - ONE AT THE TIME OR ELSE
+	// queryIntoDB(movieSQL, films)
+	// queryIntoDB(planetSQL, planets)
+	// queryIntoDB(speciesSQL, species)
+	// queryIntoDB(charSQL, people)
+	// queryIntoDB(aiSQL, appearsIn)
+}
+
+const queryIntoDB = (sql, array) => {
+	const connection = getDBConnection()
+
+	connection.query(sql, [array], err => {
+		if (err) {
+			console.log(err)
+		}
+	})
+
+	connection.end(err => {
+		if (err) {
+			console.log(err)
+		}
+	})
 }
 
 const createTable = async sqlArr => {
@@ -134,7 +174,7 @@ const getSpecies = async () => {
 
 	return Promise.all(
 		species.map(async s => {
-			s[2] = s[2] ? (await axios.get(s[2])).data.name : 'n/a'
+			s[2] = s[2] ? (await axios.get(s[2])).data.name : 'unknown'
 			return s
 		})
 	)
@@ -147,7 +187,7 @@ const getFilms = async () => {
 		data: { results }
 	} = await axios.get(filmsURL)
 
-	return results.map(f => [f.title, f.episode_id, f.release_date, f.characters])
+	return results.map(f => [f.title, f.release_date, f.episode_id, f.characters])
 }
 
 const getAppearsIn = (people, films) => {
@@ -156,7 +196,7 @@ const getAppearsIn = (people, films) => {
 	films.forEach(f => {
 		people.forEach(p => {
 			if (f[3].includes(p[3])) {
-				episodeAndCharacters.push([f[1], p[0]])
+				episodeAndCharacters.push([p[0], f[2]])
 			}
 		})
 	})

@@ -1,6 +1,7 @@
 import { importData } from './dataImporter.mjs'
 
-importData()
+// No, danger.
+// importData()
 
 /* import express from 'express'
 const app = express()
