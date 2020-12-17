@@ -20,18 +20,23 @@ export const importData = async () => {
 	})
 
 	// const people = await getPeople()
+	// console.table(people)
 	console.log('Done with you people')
 
 	// const planets = await getPlanets()
+	// console.table(planets)
 	console.log('Done with them planets')
 
 	// const species = await getSpecies()
+	// console.table(species)
 	console.log('That was nothing speciesal')
 
 	// const films = await getFilms()
+	// console.table(films)
 	console.log('Done wiz ze filmz')
 
 	// const appearsIn = getAppearsIn(people, films)
+	// console.table(appearsIn)
 	console.log('I now know that Luke Skywalker was in Star Wars')
 }
 
@@ -99,12 +104,10 @@ const getSpecies = async () => {
 		speciesURL = next
 	} while (speciesURL)
 
-	// species.forEach(s => console.table(s)) // DROIDS KAN HA NULL HOMEWORLD
-
 	return Promise.all(
 		species.map(async s => ({
 			...s,
-			homeworld: s.homeworld ? (await axios.get(s.homeworld)).data.name : null
+			homeworld: s.homeworld ? (await axios.get(s.homeworld)).data.name : 'n/a'
 		}))
 	)
 }
