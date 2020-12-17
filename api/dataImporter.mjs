@@ -3,41 +3,74 @@ import { getDBConnection } from './mySQL.mjs'
 
 const url = 'https://swapi.dev/api/'
 
+const sqlArr = [
+	`CREATE TABLE IF NOT EXISTS movie (
+        name VARCHAR(50) UNIQUE NOT NULL, 
+        release_date VARCHAR(10) NOT NULL, 
+        id INT, 
+        PRIMARY KEY (id))`,
+	`CREATE TABLE IF NOT EXISTS planet (
+        name VARCHAR(50), 
+        diameter VARCHAR(50) NOT NULL, 
+        population VARCHAR(50) NOT NULL, 
+        PRIMARY KEY (name))`,
+	`CREATE TABLE IF NOT EXISTS species (
+        name VARCHAR(50), 
+        classification VARCHAR(50) NOT NULL, 
+        home_planet VARCHAR(50) NOT NULL, 
+        PRIMARY KEY (name), 
+        FOREIGN KEY (home_planet) REFERENCES planet(name))`,
+	`CREATE TABLE IF NOT EXISTS movie_character (
+        name VARCHAR(50),
+        birth_planet VARCHAR(50),
+        species VARCHAR(50),
+        PRIMARY KEY (name),
+        FOREIGN KEY (birth_planet) REFERENCES planet(name),
+	    FOREIGN KEY (species) REFERENCES species(name))`,
+	`CREATE TABLE IF NOT EXISTS appears_in (
+	    character_name VARCHAR(50),
+	    movie_id INT,
+	    FOREIGN KEY (character_name) REFERENCES movie_character(name),
+	    FOREIGN KEY (movie_id) REFERENCES movie(id))`
+]
+
 export const importData = async () => {
+	// createTable(sqlArr)
+
+	const people = await getPeople()
+	console.table(people)
+	console.log('Done with you people')
+
+	const planets = await getPlanets()
+	console.table(planets)
+	console.log('Done with them planets')
+
+	const species = await getSpecies()
+	console.table(species)
+	console.log('That was nothing speciesal')
+
+	const films = await getFilms()
+	console.table(films)
+	console.log('Done wiz ze filmz')
+
+	const appearsIn = getAppearsIn(people, films)
+	console.table(appearsIn)
+	console.log('I now know that Luke Skywalker was in Star Wars')
+
+	// PUT IN DB :^)
+	putInDB(people, planets, species, films, appearsIn)
+}
+
+const createTable = async sqlArr => {
 	const connection = getDBConnection()
 
-	console.log('adsfsdf')
-
-	const createTableSQL1 =
-		'CREATE TABLE IF NOT EXISTS thing (name VARCHAR(69), age VARCHAR(420))'
-
-	query(createTableSQL1, connection)
+	sqlArr.forEach(sa => query(sa, connection))
 
 	connection.end(err => {
 		if (err) {
 			console.log(err)
 		}
 	})
-
-	// const people = await getPeople()
-	// console.table(people)
-	console.log('Done with you people')
-
-	// const planets = await getPlanets()
-	// console.table(planets)
-	console.log('Done with them planets')
-
-	// const species = await getSpecies()
-	// console.table(species)
-	console.log('That was nothing speciesal')
-
-	// const films = await getFilms()
-	// console.table(films)
-	console.log('Done wiz ze filmz')
-
-	// const appearsIn = getAppearsIn(people, films)
-	// console.table(appearsIn)
-	console.log('I now know that Luke Skywalker was in Star Wars')
 }
 
 const getPeople = async () => {
@@ -50,16 +83,23 @@ const getPeople = async () => {
 		} = await axios.get(peopleURL)
 
 		results.forEach(p =>
-			mahPeople.push({ name: p.name, homeworld: p.homeworld, url: p.url })
+			mahPeople.push([p.name, p.homeworld, p.species[0], p.url])
 		)
 		peopleURL = next
 	} while (peopleURL)
 
+	await Promise.all(
+		mahPeople.map(async p => {
+			p[1] = (await axios.get(p[1])).data.name
+			return p
+		})
+	)
+
 	return Promise.all(
-		mahPeople.map(async per => ({
-			...per,
-			homeworld: (await axios.get(per.homeworld)).data.name
-		}))
+		mahPeople.map(async p => {
+			p[2] = p[2] ? (await axios.get(p[2])).data.name : 'Human'
+			return p
+		})
 	)
 }
 
@@ -72,13 +112,7 @@ const getPlanets = async () => {
 			data: { results, next }
 		} = await axios.get(planetsURL)
 
-		results.forEach(p =>
-			planets.push({
-				name: p.name,
-				diameter: p.diameter,
-				population: p.population
-			})
-		)
+		results.forEach(p => planets.push([p.name, p.diameter, p.population]))
 		planetsURL = next
 	} while (planetsURL)
 
@@ -94,21 +128,15 @@ const getSpecies = async () => {
 			data: { results, next }
 		} = await axios.get(speciesURL)
 
-		results.forEach(s =>
-			species.push({
-				name: s.name,
-				classification: s.classification,
-				homeworld: s.homeworld
-			})
-		)
+		results.forEach(s => species.push([s.name, s.classification, s.homeworld]))
 		speciesURL = next
 	} while (speciesURL)
 
 	return Promise.all(
-		species.map(async s => ({
-			...s,
-			homeworld: s.homeworld ? (await axios.get(s.homeworld)).data.name : 'n/a'
-		}))
+		species.map(async s => {
+			s[2] = s[2] ? (await axios.get(s[2])).data.name : 'n/a'
+			return s
+		})
 	)
 }
 
@@ -119,12 +147,7 @@ const getFilms = async () => {
 		data: { results }
 	} = await axios.get(filmsURL)
 
-	return results.map(f => ({
-		title: f.title,
-		episode_id: f.episode_id,
-		release_date: f.release_date,
-		characters: f.characters
-	}))
+	return results.map(f => [f.title, f.episode_id, f.release_date, f.characters])
 }
 
 const getAppearsIn = (people, films) => {
@@ -132,11 +155,8 @@ const getAppearsIn = (people, films) => {
 
 	films.forEach(f => {
 		people.forEach(p => {
-			if (f.characters.includes(p.url)) {
-				episodeAndCharacters = [
-					...episodeAndCharacters,
-					{ episode_id: f.episode_id, character_name: p.name }
-				]
+			if (f[3].includes(p[3])) {
+				episodeAndCharacters.push([f[1], p[0]])
 			}
 		})
 	})
