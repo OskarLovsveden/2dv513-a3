@@ -3,7 +3,7 @@ import { getDBConnection } from './mySQL.mjs'
 
 const url = 'https://swapi.dev/api/'
 
-export const importData = () => {
+export const importData = async () => {
     const connection = getDBConnection()
 
     console.log("adsfsdf")
@@ -19,10 +19,16 @@ export const importData = () => {
         }
     })
 
-    getStarWarsInfo()
+    const people = await getPeople()
+
+    console.log("Done with you people")
+
+    const planets = await getPlanets()
+
+    console.log("Done with them planets")
 }
 
-const getStarWarsInfo = async () => {
+const getPeople = async () => {
     let peopleURL = `${url}people/`
     let mahPeople = []
 
@@ -32,16 +38,22 @@ const getStarWarsInfo = async () => {
         results.forEach((p) => mahPeople.push({ name: p.name, homeworld: p.homeworld}))
         peopleURL = next
     } while (peopleURL);
+ 
+    return Promise.all(mahPeople.map(async (per) => ({ ...per, homeworld: (await axios.get(per.homeworld)).data.name })))
+}
 
-    const yeah = await Promise.all(mahPeople.map(async (per) => {
-        return {
-            ...per,
-            homeworld: (await axios.get(per.homeworld)).data.name
-        }
-    }))
+const getPlanets = async () => {
+    let planetsURL = `${url}planets/`
+    let planets = []
 
-    /* console.log(mahPeople) */
-    console.log(yeah)
+    do {
+        const { data: { results, next } } = await axios.get(planetsURL)
+
+        results.forEach((p) => planets.push({ name: p.name, diameter: p.diameter, population: p.population }))
+        planetsURL = next
+    } while (planetsURL);
+
+    return planets
 }
 
 const query = (sql, connection) => {
