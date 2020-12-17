@@ -1,7 +1,6 @@
 import { importData } from './dataImporter.mjs'
 
 importData()
-console.log("DET FUNKA")
 
 /* import express from 'express'
 const app = express()
@@ -14,4 +13,3 @@ app.get('/', (req, res) => {
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
 }) */
-
