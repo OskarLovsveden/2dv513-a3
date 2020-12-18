@@ -2,9 +2,7 @@ import { query } from '../helpers/mySQL.mjs'
 
 const peopleController = {}
 
-
 peopleController.index = async (req, res) => {
-
 	try {
 		let params = []
 		let sql = `SELECT * FROM movie_character`
@@ -19,11 +17,10 @@ peopleController.index = async (req, res) => {
 		res.json(characters)
 	} catch (error) {
 		res.send(error)
-	}    
+	}
 }
 
 peopleController.show = async (req, res) => {
-
 	try {
 		const sql = `SELECT * FROM movie_character WHERE name = ?`
 
@@ -32,7 +29,7 @@ peopleController.show = async (req, res) => {
 		res.json(characters)
 	} catch (error) {
 		res.send(error)
-	}    
+	}
 }
 
 export default peopleController
