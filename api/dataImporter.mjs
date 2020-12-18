@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { getDBConnection } from './mySQL.mjs'
+import { getDBConnection } from './helpers/mySQL.mjs'
 
 const url = 'https://swapi.dev/api/'
 
@@ -78,11 +78,11 @@ const putInDB = (films, planets, species, people, appearsIn) => {
 	const aiSQL = 'INSERT INTO appears_in (character_name, movie_id) VALUES ?'
 
 	// WARNING! RUN AT OWN RISK - ONE AT THE TIME OR ELSE
-	// queryIntoDB(movieSQL, films)
-	// queryIntoDB(planetSQL, planets)
-	// queryIntoDB(speciesSQL, species)
-	// queryIntoDB(charSQL, people)
-	// queryIntoDB(aiSQL, appearsIn)
+	/* queryIntoDB(movieSQL, films) */
+	/* queryIntoDB(planetSQL, planets) */
+	/* queryIntoDB(speciesSQL, species) */
+	/* queryIntoDB(charSQL, people) */
+	/* queryIntoDB(aiSQL, appearsIn) */
 }
 
 const queryIntoDB = (sql, array) => {
