@@ -1,19 +1,19 @@
 import React from 'react';
 import { IonIcon, IonItem, IonLabel } from '@ionic/react';
-import { personCircleOutline } from 'ionicons/icons';
-import character from '../types/ICharacter';
+import { filmOutline } from 'ionicons/icons';
+import IMovie from '../types/IMovie';
 
-const CharacterListItem: React.FC<character> = ({ name, species, birth_planet }) => {
+
+const MovieListItem: React.FC<IMovie> = ({ name, id, release_date }) => {
   return (
     <IonItem>
-      <IonIcon icon={personCircleOutline} slot="start"></IonIcon>
+      <IonIcon icon={filmOutline} slot="start"></IonIcon>
       <IonLabel>
-        <h2>{name}</h2>
-        <h3>{species}</h3>
-        <h3>{birth_planet}</h3>
+        <h2>Episode {id} - {name}</h2>
+        <h3>{release_date}</h3>
       </IonLabel>
     </IonItem>
   );
 };
 
-export default CharacterListItem;
+export default MovieListItem;

@@ -1,9 +1,9 @@
 import React from 'react';
 import { IonIcon, IonItem, IonLabel } from '@ionic/react';
 import { personCircleOutline } from 'ionicons/icons';
-import character from '../types/ICharacter';
+import ICharacter from '../types/ICharacter';
 
-const CharacterListItem: React.FC<character> = ({ name, species, birth_planet }) => {
+const CharacterListItem: React.FC<ICharacter> = ({ name, species, birth_planet }) => {
   return (
     <IonItem>
       <IonIcon icon={personCircleOutline} slot="start"></IonIcon>

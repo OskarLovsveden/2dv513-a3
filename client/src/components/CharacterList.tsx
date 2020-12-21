@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { IonContent, IonHeader, IonList, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 import CharacterListItem from './CharacterListItem';
-import character from '../types/ICharacter';
+
 
 import axios from 'axios';
+import ICharacter from '../types/ICharacter';
 
 const CharacterList: React.FC = () => {
-    const [people, setPeople] = useState<character[]>();
+    const [people, setPeople] = useState<ICharacter[]>();
 
     useEffect(() => {
         const getPeople = async () => {
-            const users = await axios.get<character[]>("http://localhost:3000/people");
+            const users = await axios.get<ICharacter[]>("http://localhost:3000/people");
             setPeople(users.data);
         };
         getPeople();

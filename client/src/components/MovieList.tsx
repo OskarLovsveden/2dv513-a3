@@ -1,50 +1,46 @@
 import React, { useEffect, useState } from 'react';
 import { IonContent, IonHeader, IonList, IonPage, IonTitle, IonToolbar } from '@ionic/react';
-import CharacterListItem from './CharacterListItem';
+import MovieListItem from './MovieListItem';
+
+import IMovie from '../types/IMovie'
+
 
 import axios from 'axios';
-
-interface character {
-    birth_planet: string,
-    name: string,
-    species: string;
-}
-
-const CharacterList: React.FC = () => {
-    const [people, setPeople] = useState<character[]>();
+const MovieList: React.FC = () => {
+    const [movie, setPeople] = useState<IMovie[]>();
 
     useEffect(() => {
-        // const getPeople = async () => {
-        //     const users = await axios.get<character[]>("http://localhost:3000/people");
-        //     setPeople(users.data);
-        // };
-        // getPeople();
+        const getMovie = async () => {
+            const movies = await axios.get<IMovie[]>("http://localhost:3000/movie");
+            setPeople(movies.data);
+        };
+        getMovie();
     }, []);
 
-    // const showPeople = () => {
-    //     if (people) {
-    //         return (
-    //             <IonList>
-    //                 {people.map((p, index) =>
-    //                     <CharacterListItem index={index} name={p.name} species={p.species} planet={p.birth_planet}></CharacterListItem>
-    //                 )}
-    //             </IonList>
-    //         );
-    //     }
-    // };
+    const showMovie = () => {
+        if (movie) {
+            return (
+                <IonList>
+                    {movie.map(m =>
+                        <MovieListItem key={m.id} id={m.id} name={m.name} release_date={m.release_date}></MovieListItem>
+                    )}
+                </IonList>
+            );
+        }
+    };
 
     return (
         <IonPage>
             <IonHeader>
                 <IonToolbar>
-                    <IonTitle>Characters</IonTitle>
+                    <IonTitle>Movies</IonTitle>
                 </IonToolbar>
             </IonHeader>
             <IonContent fullscreen>
-                movie hej
+               {showMovie()}
             </IonContent>
         </IonPage>
     );
 };
 
-export default CharacterList;
+export default MovieList;
