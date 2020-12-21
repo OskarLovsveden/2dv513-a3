@@ -10,8 +10,8 @@ const PlanetsList: React.FC = () => {
 
     useEffect(() => {
         const getPlanets = async () => {
-            const users = await axios.get<IPlanet[]>("http://localhost:3000/planet");
-            setPlanets(users.data);
+            const planets = await axios.get<IPlanet[]>("http://localhost:3000/planet");
+            setPlanets(planets.data);
         };
         getPlanets();
     }, []);
