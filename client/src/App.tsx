@@ -10,10 +10,12 @@ import {
   IonTabs
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { ellipse, square, triangle } from 'ionicons/icons';
-import Tab1 from './pages/Tab1';
-import Tab2 from './pages/Tab2';
-import Tab3 from './pages/Tab3';
+import { filmOutline, happyOutline, personOutline, planetOutline, transgenderOutline } from 'ionicons/icons';
+import Movies from './pages/Movies';
+import Characters from './pages/Characters';
+import Species from './pages/Species';
+import Planets from './pages/Planets';
+import FunFacts from './pages/FunFacts';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -39,23 +41,33 @@ const App: React.FC = () => (
     <IonReactRouter>
       <IonTabs>
         <IonRouterOutlet>
-          <Route path="/tab1" component={Tab1} exact={true} />
-          <Route path="/tab2" component={Tab2} exact={true} />
-          <Route path="/tab3" component={Tab3} />
-          <Route path="/" render={() => <Redirect to="/tab1" />} exact={true} />
+          <Route path="/movies" component={Movies} exact={true} />
+          <Route path="/characters" component={Characters} exact={true} />
+          <Route path="/species" component={Species} exact={true} />
+          <Route path="/planets" component={Planets} exact={true} />
+          <Route path="/funfacts" component={FunFacts} exact={true} />
+          <Route path="/" render={() => <Redirect to="/funfacts" />} exact={true} />
         </IonRouterOutlet>
         <IonTabBar slot="bottom">
-          <IonTabButton tab="tab1" href="/tab1">
-            <IonIcon icon={triangle} />
+          <IonTabButton tab="movies" href="/movies">
+            <IonIcon icon={filmOutline} />
+            <IonLabel>Movies</IonLabel>
+          </IonTabButton>
+          <IonTabButton tab="characters" href="/characters">
+            <IonIcon icon={personOutline} />
             <IonLabel>Characters</IonLabel>
           </IonTabButton>
-          <IonTabButton tab="tab2" href="/tab2">
-            <IonIcon icon={ellipse} />
-            <IonLabel>Tab 2</IonLabel>
+          <IonTabButton tab="species" href="/species">
+            <IonIcon icon={transgenderOutline} />
+            <IonLabel>Species</IonLabel>
           </IonTabButton>
-          <IonTabButton tab="tab3" href="/tab3">
-            <IonIcon icon={square} />
-            <IonLabel>Tab 3</IonLabel>
+          <IonTabButton tab="planets" href="/planets">
+            <IonIcon icon={planetOutline} />
+            <IonLabel>Planets</IonLabel>
+          </IonTabButton>
+          <IonTabButton tab="funfacts" href="/funfacts">
+            <IonIcon icon={happyOutline} />
+            <IonLabel>Fun Facts</IonLabel>
           </IonTabButton>
         </IonTabBar>
       </IonTabs>

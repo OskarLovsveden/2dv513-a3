@@ -1,14 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { IonContent, IonHeader, IonList, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import CharacterListItem from './CharacterListItem';
+import character from '../types/ICharacter';
 
 import axios from 'axios';
-import CharacterListItem from './CharacterListItem';
-
-interface character {
-    birth_planet: string,
-    name: string,
-    species: string;
-}
 
 const CharacterList: React.FC = () => {
     const [people, setPeople] = useState<character[]>();
@@ -26,14 +21,12 @@ const CharacterList: React.FC = () => {
             return (
                 <IonList>
                     {people.map((p, index) =>
-                        <CharacterListItem index={index} name={p.name} species={p.species} planet={p.birth_planet}></CharacterListItem>
+                        <CharacterListItem key={index} name={p.name} species={p.species} birth_planet={p.birth_planet}></CharacterListItem>
                     )}
                 </IonList>
             );
         }
     };
-
-    showPeople();
 
     return (
         <IonPage>

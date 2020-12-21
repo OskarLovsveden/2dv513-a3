@@ -2,10 +2,10 @@ import React from 'react';
 
 import CharacterList from '../components/CharacterList';
 
-const Tab1: React.FC = () => {
+const Characters: React.FC = () => {
   return (
     <CharacterList></CharacterList>
   );
 };
 
-export default Tab1;
+export default Characters;
