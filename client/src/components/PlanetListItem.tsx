@@ -1,19 +1,19 @@
 import React from 'react';
 import { IonIcon, IonItem, IonLabel } from '@ionic/react';
-import { personCircleOutline } from 'ionicons/icons';
-import character from '../types/ICharacter';
+import { planetOutline } from 'ionicons/icons';
+import IPlanet from '../types/IPlanet';
 
-const CharacterListItem: React.FC<character> = ({ name, species, birth_planet }) => {
+const PlanetListItem: React.FC<IPlanet> = ({ name, diameter, population }) => {
   return (
     <IonItem>
-      <IonIcon icon={personCircleOutline} slot="start"></IonIcon>
+      <IonIcon icon={planetOutline} slot="start"></IonIcon>
       <IonLabel>
         <h2>{name}</h2>
-        <h3>{species}</h3>
-        <h3>{birth_planet}</h3>
+        <h3>Population: {population}</h3>
+        <h3>Diameter: {diameter}</h3>
       </IonLabel>
     </IonItem>
   );
 };
 
-export default CharacterListItem;
+export default PlanetListItem;

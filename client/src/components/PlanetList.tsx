@@ -1,50 +1,45 @@
 import React, { useEffect, useState } from 'react';
 import { IonContent, IonHeader, IonList, IonPage, IonTitle, IonToolbar } from '@ionic/react';
-import CharacterListItem from './CharacterListItem';
+import PlanetListItem from './PlanetListItem';
+import IPlanet from '../types/IPlanet';
 
 import axios from 'axios';
 
-interface character {
-    birth_planet: string,
-    name: string,
-    species: string;
-}
-
-const CharacterList: React.FC = () => {
-    const [people, setPeople] = useState<character[]>();
+const PlanetsList: React.FC = () => {
+    const [planets, setPlanets] = useState<IPlanet[]>();
 
     useEffect(() => {
-        // const getPeople = async () => {
-        //     const users = await axios.get<character[]>("http://localhost:3000/people");
-        //     setPeople(users.data);
-        // };
-        // getPeople();
+        const getPlanets = async () => {
+            const users = await axios.get<IPlanet[]>("http://localhost:3000/planet");
+            setPlanets(users.data);
+        };
+        getPlanets();
     }, []);
 
-    // const showPeople = () => {
-    //     if (people) {
-    //         return (
-    //             <IonList>
-    //                 {people.map((p, index) =>
-    //                     <CharacterListItem index={index} name={p.name} species={p.species} planet={p.birth_planet}></CharacterListItem>
-    //                 )}
-    //             </IonList>
-    //         );
-    //     }
-    // };
+    const showPlanets = () => {
+        if (planets) {
+            return (
+                <IonList>
+                    {planets.map((p, index) =>
+                        <PlanetListItem key={index} name={p.name} diameter={p.diameter} population={p.population}></PlanetListItem>
+                    )}
+                </IonList>
+            );
+        }
+    };
 
     return (
         <IonPage>
             <IonHeader>
                 <IonToolbar>
-                    <IonTitle>Characters</IonTitle>
+                    <IonTitle>Planets</IonTitle>
                 </IonToolbar>
             </IonHeader>
             <IonContent fullscreen>
-                planäter
+                {showPlanets()}
             </IonContent>
         </IonPage>
     );
 };
 
-export default CharacterList;
+export default PlanetsList;
