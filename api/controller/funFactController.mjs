@@ -4,19 +4,35 @@ const funFactController = {}
 
 funFactController.index = async (req, res) => {
 	try {
-		const funFacts = {}
-
-		await viewCharactersMovieAppearancesDescending()
-		await viewMostCommonBirthPlanetsCharacters()
-		await viewNaboolianAppearances()
-		funFacts.naboolian_appearances = await naboolianAppearances()
-
-		await viewSpeciesAppearancesCounted()
-		funFacts.species_appearances_counted = await speciesAppearancesCounted()
-
-		res.json(funFacts)
+		res.json([await getFactOne(), await getFactTwo()])
 	} catch (error) {
 		res.send(error)
+	}
+}
+
+const getFactOne = async () => {
+	await viewCharactersMovieAppearancesDescending()
+	await viewMostCommonBirthPlanetsCharacters()
+	await viewMostCommonBirthPlanetsCharactersAppearances()
+
+	const [{ birth_planet }] = await mostCommonBirthPlanet()
+	const factOneData = (await mostCommonBirthPlanetsCharactersAppearances()).map(a => ({ data_key: a.name, data_value: a.movie_appearances }))
+
+	return {
+		id: 1,
+		flavor_text: `${birth_planet} is the planet with the most characters native to it. This is how many times these characters appears in the movies.`,
+		data: factOneData
+	}
+}
+
+const getFactTwo = async () => {
+	await viewSpeciesAppearancesCounted()
+	const factTwoData = (await speciesAppearancesCounted()).map(s => ({ data_key: s.species, data_value: s.character_amount }))
+
+	return {
+		id: 2,
+		flavor_text: "This is how many characters there are of each species in the movies.",
+		data: factTwoData
 	}
 }
 
@@ -42,9 +58,9 @@ const viewMostCommonBirthPlanetsCharacters = () => {
 	return query(sql)
 }
 
-const viewNaboolianAppearances = () => {
-	const sql = `CREATE OR REPLACE VIEW naboolian_appearances AS
-	SELECT t2.name, t2.birth_planet, t1.movie_appearances
+const viewMostCommonBirthPlanetsCharactersAppearances = () => {
+	const sql = `CREATE OR REPLACE VIEW most_common_birth_planets_characters_appearances AS
+	SELECT t2.name, t1.movie_appearances
 	FROM characters_movie_appearances_descending t1
 	JOIN most_common_birth_planets_characters t2
 	ON t1.character_name = t2.name
@@ -53,8 +69,8 @@ const viewNaboolianAppearances = () => {
 	return query(sql)
 }
 
-const naboolianAppearances = () => {
-	const sql = `SELECT * FROM naboolian_appearances`
+const mostCommonBirthPlanetsCharactersAppearances = () => {
+	const sql = `SELECT * FROM most_common_birth_planets_characters_appearances`
 	return query(sql)
 }
 
@@ -64,6 +80,16 @@ const viewSpeciesAppearancesCounted = () => {
 	FROM movie_character 
 	GROUP BY species
 	ORDER BY COUNT(species) DESC`
+
+	return query(sql)
+}
+
+const mostCommonBirthPlanet = () => {
+	const sql = `SELECT birth_planet
+	FROM movie_character
+	GROUP BY birth_planet
+	ORDER BY COUNT(birth_planet) DESC
+	LIMIT 1`
 
 	return query(sql)
 }

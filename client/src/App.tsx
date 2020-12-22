@@ -1,5 +1,5 @@
 import React from 'react';
-import { Redirect, Route } from 'react-router-dom';
+import { Route, Redirect } from 'react-router-dom';
 import {
   IonApp,
   IonButton,
@@ -17,6 +17,7 @@ import Characters from './pages/Characters';
 import Species from './pages/Species';
 import Planets from './pages/Planets';
 import FunFacts from './pages/FunFacts';
+import NotFound from './pages/NotFound';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -40,7 +41,7 @@ import Home from './pages/Home';
 
 const App: React.FC = () => (
   <IonApp>
-        <IonButton fill="outline" shape="round" size="small"  href="/" style={{position: 'absolute', top:0, left:0, zIndex: 5000}}><IonIcon icon={homeOutline}></IonIcon></IonButton>
+    <IonButton fill="outline" shape="round" size="small" href="/" style={{ position: 'absolute', top: 0, left: 0, zIndex: 5000 }}><IonIcon icon={homeOutline}></IonIcon></IonButton>
     <IonReactRouter>
       <IonTabs>
         <IonRouterOutlet>
@@ -51,24 +52,24 @@ const App: React.FC = () => (
           <Route path="/funfacts" component={FunFacts} exact={true} />
           <Route path="/" component={Home} exact={true} />
         </IonRouterOutlet>
-        <IonTabBar slot="bottom" style={{"--background": "var(--ion-color-step-50)"}}>
-          <IonTabButton tab="movies" href="/movies" style={{"--color-selected": "#eb445a"}}>
+        <IonTabBar slot="bottom" style={{ "--background": "var(--ion-color-step-50)" }}>
+          <IonTabButton tab="movies" href="/movies" style={{ "--color-selected": "#eb445a" }}>
             <IonIcon icon={filmOutline} />
             <IonLabel>Movies</IonLabel>
           </IonTabButton>
-          <IonTabButton tab="characters" href="/characters" style={{"--color-selected": "#eb445a"}}>
+          <IonTabButton tab="characters" href="/characters" style={{ "--color-selected": "#eb445a" }}>
             <IonIcon icon={personOutline} />
             <IonLabel>Characters</IonLabel>
           </IonTabButton>
-          <IonTabButton tab="species" href="/species" style={{"--color-selected": "#eb445a"}}>
-            <IonIcon icon={transgenderOutline}/>
+          <IonTabButton tab="species" href="/species" style={{ "--color-selected": "#eb445a" }}>
+            <IonIcon icon={transgenderOutline} />
             <IonLabel>Species</IonLabel>
           </IonTabButton>
-          <IonTabButton tab="planets" href="/planets" style={{"--color-selected": "#eb445a"}}>
+          <IonTabButton tab="planets" href="/planets" style={{ "--color-selected": "#eb445a" }}>
             <IonIcon icon={planetOutline} />
             <IonLabel>Planets</IonLabel>
           </IonTabButton>
-          <IonTabButton tab="funfacts" href="/funfacts" style={{"--color-selected": "#eb445a"}}>
+          <IonTabButton tab="funfacts" href="/funfacts" style={{ "--color-selected": "#eb445a" }}>
             <IonIcon icon={happyOutline} />
             <IonLabel>Fun Facts</IonLabel>
           </IonTabButton>

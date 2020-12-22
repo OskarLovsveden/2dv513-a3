@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { IonContent, IonHeader, IonList, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import { IonList } from '@ionic/react';
 import MovieListItem from './MovieListItem';
 
-import IMovie from '../types/IMovie'
-
+import IMovie from '../types/IMovie';
 
 import axios from 'axios';
 const MovieList: React.FC = () => {
@@ -17,30 +16,15 @@ const MovieList: React.FC = () => {
         getMovie();
     }, []);
 
-    const showMovie = () => {
-        if (movie) {
-            return (
-                <IonList>
-                    {movie.map(m =>
-                        <MovieListItem key={m.id} id={m.id} name={m.name} release_date={m.release_date}></MovieListItem>
-                    )}
-                </IonList>
-            );
-        }
-    };
 
-    return (
-        <IonPage>
-            <IonHeader>
-                <IonToolbar>
-                    <IonTitle>Movies</IonTitle>
-                </IonToolbar>
-            </IonHeader>
-            <IonContent fullscreen>
-               {showMovie()}
-            </IonContent>
-        </IonPage>
-    );
+    return movie
+        ? <IonList>
+            {movie.map(m =>
+                <MovieListItem key={m.id} id={m.id} name={m.name} release_date={m.release_date}></MovieListItem>
+            )}
+        </IonList>
+        : <></>;
+
 };
 
 export default MovieList;

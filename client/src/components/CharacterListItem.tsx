@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
-import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonContent, IonIcon, IonItem, IonLabel, IonList, IonModal } from '@ionic/react';
+import React from 'react';
+import { IonIcon, IonItem, IonLabel, IonList } from '@ionic/react';
 import { personCircleOutline } from 'ionicons/icons';
 import ICharacter from '../types/ICharacter';
 import Modal from './Modal';
 
 const CharacterListItem: React.FC<ICharacter> = ({ name, species, birth_planet, appearsIn }) => {
-  const [showModal, setShowModal] = useState(false);
 
   return (
     <IonItem>

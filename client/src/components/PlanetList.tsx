@@ -20,7 +20,7 @@ const PlanetsList: React.FC = () => {
     const showPlanets = () => {
         if (planets) {
             if (search !== null) {
-                return filteredPlanets()
+                return filteredPlanets();
             }
             return (
                 <IonList>
@@ -35,32 +35,32 @@ const PlanetsList: React.FC = () => {
     const filteredPlanets = () => {
         const filteredPlanets = planets?.filter(p => {
             if (search == null) {
-                return p
+                return p;
             } else {
-                return p.name.toLowerCase().includes(search.toLowerCase())
+                return p.name.toLowerCase().includes(search.toLowerCase());
             }
-        })
-        
+        });
+
         return (
             <IonList>
-                 <IonList>
+                <IonList>
                     {filteredPlanets?.map((p, index) =>
                         <PlanetListItem key={index} name={p.name} diameter={p.diameter} population={p.population}></PlanetListItem>
                     )}
                 </IonList>
             </IonList>
         );
-    }
+    };
 
     return (
         <IonPage>
             <IonHeader>
                 <IonToolbar>
-                    <IonTitle>Planets</IonTitle>
+                    <IonTitle style={{ letterSpacing: "3px" }}>PLANETS</IonTitle>
                 </IonToolbar>
             </IonHeader>
             <IonContent fullscreen>
-            <IonSearchbar value={search} onIonChange={e => setSearchText(e.detail.value!)}></IonSearchbar>
+                <IonSearchbar value={search} onIonChange={e => setSearchText(e.detail.value!)}></IonSearchbar>
                 {showPlanets()}
             </IonContent>
         </IonPage>

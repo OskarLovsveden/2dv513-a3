@@ -1,15 +1,11 @@
 export default interface IFacts {
-    naboolian_appearances: INaboolianAppearances[],
-    species_appearances_counted: ISpeciesAppearancesCounted[]
+    id: number,
+    title: string,
+    flavor_text: string,
+    data: data[]
 }
 
-interface INaboolianAppearances {
-    name: string,
-    birth_planet: string,
-    movie_appearances: number
-}
-
-interface ISpeciesAppearancesCounted {
-    species: string,
-    character_amount: number      
+interface data {
+    data_key: any
+    data_value: any
 }

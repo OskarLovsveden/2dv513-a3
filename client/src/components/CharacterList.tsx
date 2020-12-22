@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { IonContent, IonHeader, IonList, IonPage, IonSearchbar, IonTitle, IonToolbar } from '@ionic/react';
 import CharacterListItem from './CharacterListItem';
 
-
 import axios from 'axios';
 import ICharacter from '../types/ICharacter';
 
@@ -40,7 +39,6 @@ const CharacterList: React.FC = () => {
         }
     };
 
-
     const filteredPeople = () => {
         const filteredPeople = people?.filter(p => {
             if (search == null) {
@@ -66,13 +64,11 @@ const CharacterList: React.FC = () => {
         );
     };
 
-
-
     return (
         <IonPage>
             <IonHeader>
                 <IonToolbar>
-                    <IonTitle style={{letterSpacing: "3px"}}>CHARACTERS</IonTitle>
+                    <IonTitle style={{ letterSpacing: "3px" }}>CHARACTERS</IonTitle>
                 </IonToolbar>
             </IonHeader>
             <IonContent fullscreen>

@@ -3,7 +3,6 @@ import { IonIcon, IonItem, IonLabel } from '@ionic/react';
 import { filmOutline } from 'ionicons/icons';
 import IMovie from '../types/IMovie';
 
-
 const MovieListItem: React.FC<IMovie> = ({ name, id, release_date }) => {
   return (
     <IonItem>
