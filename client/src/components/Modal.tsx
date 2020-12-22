@@ -14,9 +14,9 @@ const Modal: React.FC<IModal> = ({ children, title, button }) => {
                     </IonCardHeader>
                     <IonCardContent>{children}</IonCardContent>
                 </IonCard>
-                <IonButton size="small" color="danger" onClick={() => setShowModal(false)}>Close</IonButton>
+                <IonButton fill="outline" size="small" onClick={() => setShowModal(false)}>Close</IonButton>
             </IonModal >
-            <IonButton color="dark" onClick={() => setShowModal(true)}>{button}</IonButton>
+            <IonButton fill="outline" onClick={() => setShowModal(true)}>{button}</IonButton>
         </>
     );
 };

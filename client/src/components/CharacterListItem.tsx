@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonContent, IonIcon, IonItem, IonLabel, IonList, IonModal } from '@ionic/react';
 import { personCircleOutline } from 'ionicons/icons';
 import ICharacter from '../types/ICharacter';
+import Modal from './Modal';
 
 const CharacterListItem: React.FC<ICharacter> = ({ name, species, birth_planet, appearsIn }) => {
   const [showModal, setShowModal] = useState(false);
@@ -12,37 +13,24 @@ const CharacterListItem: React.FC<ICharacter> = ({ name, species, birth_planet, 
       <IonLabel color="secondary">
         <h2>{name}</h2>
       </IonLabel>
-      <IonContent>
-        <IonModal isOpen={showModal} cssClass='my-custom-class'>
-          <IonCard>
-            <IonCardHeader>
-              <IonCardTitle>
-                {name}
-              </IonCardTitle>
-            </IonCardHeader>
-            <IonCardContent>
-              <IonList>
-                <IonItem>
-                  <h1>Species - {species}</h1>
-                </IonItem>
-                <IonItem>
-                  <h1>Birth Planet - {birth_planet}</h1>
-                </IonItem>
-                <IonItem>
-                  <h1>Apppear In</h1>
-                </IonItem>
-                <IonItem>
-                  <IonList>
-                    {appearsIn.map(a => (<IonItem key={a.episode}>Episode {a.episode} - {a.movie}</IonItem>))}
-                  </IonList>
-                </IonItem>
-              </IonList>
-            </IonCardContent>
-          </IonCard>
-          <IonButton fill="outline" size="small" onClick={() => setShowModal(false)}>Close</IonButton>
-        </IonModal>
-        <IonButton fill="outline" onClick={() => setShowModal(true)} class="ion-float-right">More info</IonButton>
-      </IonContent>
+      <Modal title={name} button="More Info">
+        <IonList>
+          <IonItem>
+            <h1>Species - {species}</h1>
+          </IonItem>
+          <IonItem>
+            <h1>Birth Planet - {birth_planet}</h1>
+          </IonItem>
+          <IonItem>
+            <h1>Apppear In</h1>
+          </IonItem>
+          <IonItem>
+            <IonList>
+              {appearsIn.map(a => (<IonItem key={a.episode}>Episode {a.episode} - {a.movie}</IonItem>))}
+            </IonList>
+          </IonItem>
+        </IonList>
+      </Modal>
     </IonItem>
   );
 };

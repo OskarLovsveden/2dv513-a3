@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonContent, IonIcon, IonItem, IonLabel, IonList, IonModal } from '@ionic/react';
 import { planetOutline } from 'ionicons/icons';
 import IPlanet from '../types/IPlanet';
+import Modal from './Modal';
 
 const PlanetListItem: React.FC<IPlanet> = ({ name, diameter, population }) => {
   const [showModal, setShowModal] = useState(false)
@@ -12,15 +13,7 @@ const PlanetListItem: React.FC<IPlanet> = ({ name, diameter, population }) => {
       <IonLabel color="secondary">
         <h2>{name}</h2>
       </IonLabel>
-      <IonContent>
-      <IonModal isOpen={showModal} cssClass='my-custom-class'>
-        <IonCard>
-          <IonCardHeader>
-            <IonCardTitle>
-              {name}
-            </IonCardTitle>
-          </IonCardHeader>
-          <IonCardContent>
+      <Modal title={name} button="More info">
           <IonList>
             <IonItem>
               <h1>Population: {population}</h1>
@@ -29,12 +22,7 @@ const PlanetListItem: React.FC<IPlanet> = ({ name, diameter, population }) => {
               <h1>Diameter: {diameter}</h1>
             </IonItem>
           </IonList>
-          </IonCardContent>
-        </IonCard>
-        <IonButton fill="outline" size="small" onClick={() => setShowModal(false)}>Close</IonButton>
-      </IonModal>
-      <IonButton fill="outline" onClick={() => setShowModal(true)} class="ion-float-right">More info</IonButton>
-      </IonContent>
+      </Modal>
     </IonItem>
   );
 };

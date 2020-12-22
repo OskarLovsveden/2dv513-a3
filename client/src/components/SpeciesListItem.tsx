@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonContent, IonIcon, IonItem, IonLabel, IonList, IonModal } from '@ionic/react';
 import { transgenderOutline } from 'ionicons/icons';
 import ISpecies from '../types/ISpecies';
+import Modal from './Modal';
 
 
 const SpeciesListItem: React.FC<ISpecies> = ({ name, classification, home_planet }) => {
@@ -12,18 +13,8 @@ const SpeciesListItem: React.FC<ISpecies> = ({ name, classification, home_planet
       <IonIcon icon={transgenderOutline} slot="start" color="primary"></IonIcon>
       <IonLabel color="secondary">
         <h2>{name}</h2>
-        <h3></h3>
-        <h3></h3>
       </IonLabel>
-      <IonContent>
-      <IonModal isOpen={showModal} cssClass='my-custom-class'>
-        <IonCard>
-          <IonCardHeader>
-            <IonCardTitle>
-              {name}
-            </IonCardTitle>
-          </IonCardHeader>
-          <IonCardContent>
+      <Modal title={name} button="More info">
           <IonList>
             <IonItem>
               <h1>Classification - {classification}</h1>
@@ -32,12 +23,7 @@ const SpeciesListItem: React.FC<ISpecies> = ({ name, classification, home_planet
               <h1>Indigenous to - {home_planet}</h1>
             </IonItem>
           </IonList>
-          </IonCardContent>
-        </IonCard>
-        <IonButton fill="outline" size="small" onClick={() => setShowModal(false)}>Close</IonButton>
-      </IonModal>
-      <IonButton fill="outline" onClick={() => setShowModal(true)} class="ion-float-right">More info</IonButton>
-      </IonContent>
+      </Modal>
     </IonItem>
   );
 };
