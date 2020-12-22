@@ -8,8 +8,8 @@ const CharacterListItem: React.FC<ICharacter> = ({ name, species, birth_planet, 
 
   return (
     <IonItem>
-      <IonIcon icon={personCircleOutline} slot="start"></IonIcon>
-      <IonLabel>
+      <IonIcon icon={personCircleOutline} slot="start" color="primary"></IonIcon>
+      <IonLabel color="secondary">
         <h2>{name}</h2>
       </IonLabel>
       <IonContent>
@@ -39,9 +39,9 @@ const CharacterListItem: React.FC<ICharacter> = ({ name, species, birth_planet, 
           </IonList>
           </IonCardContent>
         </IonCard>
-        <IonButton size="small" color="medium" onClick={() => setShowModal(false)}>Close</IonButton>
+        <IonButton fill="outline" size="small" onClick={() => setShowModal(false)}>Close</IonButton>
       </IonModal>
-      <IonButton color="light" onClick={() => setShowModal(true)}>More info</IonButton>
+      <IonButton fill="outline" onClick={() => setShowModal(true)} class="ion-float-right">More info</IonButton>
     </IonContent>
     </IonItem>
   );

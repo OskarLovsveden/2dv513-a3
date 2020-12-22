@@ -8,8 +8,8 @@ const PlanetListItem: React.FC<IPlanet> = ({ name, diameter, population }) => {
 
   return (
     <IonItem>
-      <IonIcon icon={planetOutline} slot="start"></IonIcon>
-      <IonLabel>
+      <IonIcon icon={planetOutline} color="primary" slot="start"></IonIcon>
+      <IonLabel color="secondary">
         <h2>{name}</h2>
       </IonLabel>
       <IonContent>
@@ -31,9 +31,9 @@ const PlanetListItem: React.FC<IPlanet> = ({ name, diameter, population }) => {
           </IonList>
           </IonCardContent>
         </IonCard>
-        <IonButton size="small" color="medium" onClick={() => setShowModal(false)}>Close</IonButton>
+        <IonButton fill="outline" size="small" onClick={() => setShowModal(false)}>Close</IonButton>
       </IonModal>
-      <IonButton color="light" onClick={() => setShowModal(true)}>More info</IonButton>
+      <IonButton fill="outline" onClick={() => setShowModal(true)} class="ion-float-right">More info</IonButton>
       </IonContent>
     </IonItem>
   );

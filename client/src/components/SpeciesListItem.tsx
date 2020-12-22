@@ -9,8 +9,8 @@ const SpeciesListItem: React.FC<ISpecies> = ({ name, classification, home_planet
 
   return (
     <IonItem>
-      <IonIcon icon={transgenderOutline} slot="start"></IonIcon>
-      <IonLabel>
+      <IonIcon icon={transgenderOutline} slot="start" color="primary"></IonIcon>
+      <IonLabel color="secondary">
         <h2>{name}</h2>
         <h3></h3>
         <h3></h3>
@@ -34,9 +34,9 @@ const SpeciesListItem: React.FC<ISpecies> = ({ name, classification, home_planet
           </IonList>
           </IonCardContent>
         </IonCard>
-        <IonButton size="small" color="medium" onClick={() => setShowModal(false)}>Close</IonButton>
+        <IonButton fill="outline" size="small" onClick={() => setShowModal(false)}>Close</IonButton>
       </IonModal>
-      <IonButton color="light" onClick={() => setShowModal(true)}>More info</IonButton>
+      <IonButton fill="outline" onClick={() => setShowModal(true)} class="ion-float-right">More info</IonButton>
       </IonContent>
     </IonItem>
   );

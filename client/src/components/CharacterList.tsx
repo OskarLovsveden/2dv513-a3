@@ -72,7 +72,7 @@ const CharacterList: React.FC = () => {
         <IonPage>
             <IonHeader>
                 <IonToolbar>
-                    <IonTitle>Characters</IonTitle>
+                    <IonTitle style={{letterSpacing: "3px"}}>CHARACTERS</IonTitle>
                 </IonToolbar>
             </IonHeader>
             <IonContent fullscreen>
