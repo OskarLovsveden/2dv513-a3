@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { IonContent, IonHeader, IonList, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import { IonContent, IonHeader, IonList, IonPage, IonSearchbar, IonTitle, IonToolbar } from '@ionic/react';
 import PlanetListItem from './PlanetListItem';
 import IPlanet from '../types/IPlanet';
 
@@ -7,6 +7,7 @@ import axios from 'axios';
 
 const PlanetsList: React.FC = () => {
     const [planets, setPlanets] = useState<IPlanet[]>();
+    const [search, setSearchText] = useState<string>('');
 
     useEffect(() => {
         const getPlanets = async () => {
@@ -18,6 +19,9 @@ const PlanetsList: React.FC = () => {
 
     const showPlanets = () => {
         if (planets) {
+            if (search !== null) {
+                return filteredPlanets()
+            }
             return (
                 <IonList>
                     {planets.map((p, index) =>
@@ -28,6 +32,26 @@ const PlanetsList: React.FC = () => {
         }
     };
 
+    const filteredPlanets = () => {
+        const filteredPlanets = planets?.filter(p => {
+            if (search == null) {
+                return p
+            } else {
+                return p.name.toLowerCase().includes(search.toLowerCase())
+            }
+        })
+        
+        return (
+            <IonList>
+                 <IonList>
+                    {filteredPlanets?.map((p, index) =>
+                        <PlanetListItem key={index} name={p.name} diameter={p.diameter} population={p.population}></PlanetListItem>
+                    )}
+                </IonList>
+            </IonList>
+        );
+    }
+
     return (
         <IonPage>
             <IonHeader>
@@ -36,6 +60,7 @@ const PlanetsList: React.FC = () => {
                 </IonToolbar>
             </IonHeader>
             <IonContent fullscreen>
+            <IonSearchbar value={search} onIonChange={e => setSearchText(e.detail.value!)}></IonSearchbar>
                 {showPlanets()}
             </IonContent>
         </IonPage>
