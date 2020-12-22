@@ -21,17 +21,17 @@ const CharacterList: React.FC = () => {
     const showPeople = () => {
         if (people) {
             if (search !== null) {
-                return filteredPeople()
+                return filteredPeople();
             }
             return (
                 <IonList>
                     {people.map((p, index) =>
-                        <CharacterListItem 
-                        key={index}
-                        name={p.name} 
-                        species={p.species} 
-                        birth_planet={p.birth_planet}
-                        appearsIn={p.appearsIn}
+                        <CharacterListItem
+                            key={index}
+                            name={p.name}
+                            species={p.species}
+                            birth_planet={p.birth_planet}
+                            appearsIn={p.appearsIn}
                         >
                         </CharacterListItem>
                     )}
@@ -44,27 +44,27 @@ const CharacterList: React.FC = () => {
     const filteredPeople = () => {
         const filteredPeople = people?.filter(p => {
             if (search == null) {
-                return p
+                return p;
             } else {
-                return p.name.toLowerCase().includes(search.toLowerCase())
+                return p.name.toLowerCase().includes(search.toLowerCase());
             }
-        })
-        
+        });
+
         return (
             <IonList>
                 {filteredPeople?.map((p, index) =>
-                    <CharacterListItem 
-                    key={index}
-                    name={p.name} 
-                    species={p.species} 
-                    birth_planet={p.birth_planet}
-                    appearsIn={p.appearsIn}
+                    <CharacterListItem
+                        key={index}
+                        name={p.name}
+                        species={p.species}
+                        birth_planet={p.birth_planet}
+                        appearsIn={p.appearsIn}
                     >
                     </CharacterListItem>
                 )}
             </IonList>
         );
-    }
+    };
 
 
 
@@ -76,7 +76,7 @@ const CharacterList: React.FC = () => {
                 </IonToolbar>
             </IonHeader>
             <IonContent fullscreen>
-            <IonSearchbar value={search} onIonChange={e => setSearchText(e.detail.value!)}></IonSearchbar>
+                <IonSearchbar value={search} onIonChange={e => setSearchText(e.detail.value!)}></IonSearchbar>
                 {showPeople()}
             </IonContent>
         </IonPage>
