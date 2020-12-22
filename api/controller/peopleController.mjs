@@ -48,10 +48,7 @@ const getAllAppearances = async (characters) => {
 	}
 
 
-	console.log(characters)
-	/* for (let index = 0; index < characters.length; index++) {
-		console.log(await query(sql, [characters[index].name]))
-	} */
+	return characters
 }
 
 export default peopleController
