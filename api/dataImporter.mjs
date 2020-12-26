@@ -17,7 +17,7 @@ const sqlArr = [
 	`CREATE TABLE IF NOT EXISTS species (
         name VARCHAR(50), 
         classification VARCHAR(50) NOT NULL, 
-        home_planet VARCHAR(50) NOT NULL, 
+        home_planet VARCHAR(50), 
         PRIMARY KEY (name), 
         FOREIGN KEY (home_planet) REFERENCES planet(name)) ENGINE=INNODB`,
 	`CREATE TABLE IF NOT EXISTS movie_character (
@@ -38,26 +38,11 @@ export const importData = async () => {
 	createTable(sqlArr)
 
 	const films = await getFilms()
-	console.table(films)
-	console.log('Done wiz ze filmz')
-
 	const planets = await getPlanets()
-	console.table(planets)
-	console.log('Done with them planets')
-
 	const species = await getSpecies()
-	console.table(species)
-	console.log('That was nothing speciesal')
-
 	const people = await getPeople()
-	console.table(people)
-	console.log('Done with you people')
-
 	const appearsIn = getAppearsIn(people, films)
-	console.table(appearsIn)
-	console.log('I now know that Luke Skywalker was in Star Wars')
 
-	// PUT IN DB :^)
 	putInDB(films, planets, species, people, appearsIn)
 }
 
@@ -77,12 +62,12 @@ const putInDB = (films, planets, species, people, appearsIn) => {
 
 	const aiSQL = 'INSERT INTO appears_in (character_name, movie_id) VALUES ?'
 
-	// WARNING! RUN AT OWN RISK - ONE AT THE TIME OR ELSE
-	/* queryIntoDB(movieSQL, films) */
-	/* queryIntoDB(planetSQL, planets) */
-	/* queryIntoDB(speciesSQL, species) */
-	/* queryIntoDB(charSQL, people) */
-	/* queryIntoDB(aiSQL, appearsIn) */
+	// Will only work if run on at a time
+	queryIntoDB(movieSQL, films)
+	queryIntoDB(planetSQL, planets)
+	queryIntoDB(speciesSQL, species)
+	queryIntoDB(charSQL, people)
+	queryIntoDB(aiSQL, appearsIn)
 }
 
 const queryIntoDB = (sql, array) => {
@@ -204,13 +189,3 @@ const getAppearsIn = (people, films) => {
 	return episodeAndCharacters
 }
 
-const query = (sql, connection) => {
-	connection.query(sql, (error, results, fields) => {
-		if (error) {
-			throw error
-		}
-		if (results) {
-			// console.log(results)
-		}
-	})
-}
