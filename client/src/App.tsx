@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Redirect } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import {
   IonApp,
   IonButton,
@@ -17,7 +17,6 @@ import Characters from './pages/Characters';
 import Species from './pages/Species';
 import Planets from './pages/Planets';
 import FunFacts from './pages/FunFacts';
-import NotFound from './pages/NotFound';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';

@@ -4,7 +4,7 @@ const funFactController = {}
 
 funFactController.index = async (req, res) => {
 	try {
-		res.json([await getFactOne(), await getFactTwo()])
+		res.json([await getFactOne(), await getFactTwo(), await getFactThree()])
 	} catch (error) {
 		res.send(error)
 	}
@@ -34,6 +34,27 @@ const getFactTwo = async () => {
 		flavor_text: "This is how many characters there are of each species in the movies.",
 		data: factTwoData
 	}
+}
+
+const getFactThree = async () => {
+	await viewCharactersNotBornOnTheirSpeciesHomePlanet()
+	const factThreeData = (await charactersNotBornOnTheirSpeciesHomePlanet()).map(s => ({ data_key: s.character_name, data_value: s.character_birth_planet }))
+
+	return {
+		id: 3,
+		flavor_text: "Some characters are not born on the planet their species is native too. This is where those characters where born instead.",
+		data: factThreeData
+	}
+}
+
+const viewCharactersNotBornOnTheirSpeciesHomePlanet = async () => {
+	const sql = `CREATE OR REPLACE VIEW characters_not_born_on_their_species_home_planet AS
+	SELECT m.name AS character_name, m.birth_planet AS character_birth_planet
+	FROM movie_character m
+	JOIN species s ON s.name = m.species
+	WHERE m.birth_planet != s.home_planet`
+
+	return query(sql)
 }
 
 const viewCharactersMovieAppearancesDescending = () => {
@@ -66,6 +87,11 @@ const viewMostCommonBirthPlanetsCharactersAppearances = () => {
 	ON t1.character_name = t2.name
 	ORDER BY t1.movie_appearances DESC`
 
+	return query(sql)
+}
+
+const charactersNotBornOnTheirSpeciesHomePlanet = () => {
+	const sql = `SELECT * FROM characters_not_born_on_their_species_home_planet`
 	return query(sql)
 }
 

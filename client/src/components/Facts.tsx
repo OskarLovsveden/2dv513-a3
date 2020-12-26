@@ -21,8 +21,8 @@ const Facts: React.FC = () => {
 
     useEffect(() => {
         const getFacts = async () => {
-            const facts = await axios.get<IFacts[]>("http://localhost:3000/fun_fact");
-            setFacts(facts.data);
+            const f = await axios.get<IFacts[]>("http://localhost:3000/fun_fact");
+            setFacts(f.data);
         };
         getFacts();
     }, []);

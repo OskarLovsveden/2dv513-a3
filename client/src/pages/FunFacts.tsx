@@ -1,4 +1,3 @@
-import { IonIcon, IonText } from '@ionic/react';
 import React from 'react';
 
 import Facts from '../components/Facts';
