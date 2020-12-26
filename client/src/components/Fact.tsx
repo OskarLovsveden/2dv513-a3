@@ -24,5 +24,4 @@ const Fact: React.FC<IFact> = ({ children, title, flavorText }) => {
     );
 };
 
-
 export default Fact;

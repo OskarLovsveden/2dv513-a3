@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { IonContent, IonHeader, IonList, IonPage, IonSearchbar, IonTitle, IonToolbar } from '@ionic/react';
+import { IonList, IonSearchbar } from '@ionic/react';
 import PlanetListItem from './PlanetListItem';
 import IPlanet from '../types/IPlanet';
 
@@ -29,6 +29,8 @@ const PlanetsList: React.FC = () => {
                     )}
                 </IonList>
             );
+        } else {
+            return <></>;
         }
     };
 
@@ -53,17 +55,10 @@ const PlanetsList: React.FC = () => {
     };
 
     return (
-        <IonPage>
-            <IonHeader>
-                <IonToolbar>
-                    <IonTitle style={{ letterSpacing: "3px" }}>PLANETS</IonTitle>
-                </IonToolbar>
-            </IonHeader>
-            <IonContent fullscreen>
-                <IonSearchbar value={search} onIonChange={e => setSearchText(e.detail.value!)}></IonSearchbar>
-                {showPlanets()}
-            </IonContent>
-        </IonPage>
+        <>
+            <IonSearchbar value={search} onIonChange={e => setSearchText(e.detail.value!)}></IonSearchbar>
+            {showPlanets()}
+        </>
     );
 };
 

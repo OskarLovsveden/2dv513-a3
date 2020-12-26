@@ -12,22 +12,9 @@ peopleController.index = async (req, res) => {
 			params = [req.query.species]
 		}
 
-
 		const characters = await query(sql, params)
 
 		await getAllAppearances(characters)
-
-		res.json(characters)
-	} catch (error) {
-		res.send(error)
-	}
-}
-
-peopleController.show = async (req, res) => {
-	try {
-		const sql = `SELECT * FROM movie_character WHERE name = ?`
-
-		const characters = await query(sql, [req.params.name])
 
 		res.json(characters)
 	} catch (error) {
@@ -44,9 +31,8 @@ const getAllAppearances = async (characters) => {
 	for (const c of characters) {
 		const appearances = await query(sql, [c.name])
 
-		c.appearsIn = appearances.map(a => ({episode: a.id, movie: a.name}))
+		c.appearsIn = appearances.map(a => ({ episode: a.id, movie: a.name }))
 	}
-
 
 	return characters
 }

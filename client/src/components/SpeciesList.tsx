@@ -34,6 +34,8 @@ const SpeciesList: React.FC = () => {
                     )}
                 </IonList>
             );
+        } else {
+            return <></>;
         }
     };
 
@@ -61,17 +63,10 @@ const SpeciesList: React.FC = () => {
     };
 
     return (
-        <IonPage>
-            <IonHeader>
-                <IonToolbar>
-                    <IonTitle style={{ letterSpacing: "3px" }}>SPECIES</IonTitle>
-                </IonToolbar>
-            </IonHeader>
-            <IonContent fullscreen>
-                <IonSearchbar value={search} onIonChange={e => setSearchText(e.detail.value!)}></IonSearchbar>
-                {showSpecies()}
-            </IonContent>
-        </IonPage>
+        <>
+            <IonSearchbar value={search} onIonChange={e => setSearchText(e.detail.value!)}></IonSearchbar>
+            {showSpecies()}
+        </>
     );
 };
 

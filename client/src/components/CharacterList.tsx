@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { IonContent, IonHeader, IonList, IonPage, IonSearchbar, IonTitle, IonToolbar } from '@ionic/react';
+import { IonList, IonSearchbar } from '@ionic/react';
 import CharacterListItem from './CharacterListItem';
 
 import axios from 'axios';
@@ -36,6 +36,8 @@ const CharacterList: React.FC = () => {
                     )}
                 </IonList>
             );
+        } else {
+            return <></>;
         }
     };
 
@@ -65,17 +67,10 @@ const CharacterList: React.FC = () => {
     };
 
     return (
-        <IonPage>
-            <IonHeader>
-                <IonToolbar>
-                    <IonTitle style={{ letterSpacing: "3px" }}>CHARACTERS</IonTitle>
-                </IonToolbar>
-            </IonHeader>
-            <IonContent fullscreen>
-                <IonSearchbar value={search} onIonChange={e => setSearchText(e.detail.value!)}></IonSearchbar>
-                {showPeople()}
-            </IonContent>
-        </IonPage>
+        <>
+            <IonSearchbar value={search} onIonChange={e => setSearchText(e.detail.value!)}></IonSearchbar>
+            {showPeople()}
+        </>
     );
 };
 

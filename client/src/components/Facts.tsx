@@ -1,14 +1,4 @@
-import {
-    IonContent,
-    IonHeader,
-    IonItem,
-    IonLabel,
-    IonList,
-    IonPage,
-    IonTitle,
-    IonToolbar,
-    IonNote
-} from '@ionic/react';
+import { IonContent, IonItem, IonLabel, IonList, IonNote } from '@ionic/react';
 import React, { useState, useEffect } from 'react';
 
 import axios from 'axios';
@@ -27,43 +17,26 @@ const Facts: React.FC = () => {
         getFacts();
     }, []);
 
-    const showFacts = () => {
-        if (facts) {
-            return (
-                <IonContent>
-                    {
-                        facts.map(f => {
-                            return (<Fact key={f.id} title={`Fact #${f.id}`} flavorText={f.flavor_text}>
-                                <Modal title={`Fact #${f.id}`} button="View Data">
-                                    <IonList>
-                                        {f.data.map((d, index) =>
-                                            <IonItem key={index}>
-                                                <IonLabel>{d.data_key}</IonLabel>
-                                                <IonNote slot="end" color="primary">{d.data_value}</IonNote>
-                                            </IonItem>
-                                        )}
-                                    </IonList>
-                                </Modal>
-                            </Fact>);
-                        })
-                    }
-                </IonContent>
-            );
-        }
-    };
-
-    return (
-        <IonPage>
-            <IonHeader>
-                <IonToolbar>
-                    <IonTitle style={{ letterSpacing: "3px" }}>FUN FACTS</IonTitle>
-                </IonToolbar>
-            </IonHeader>
-            <IonContent fullscreen>
-                {showFacts()}
-            </IonContent>
-        </IonPage>
-    );
+    return facts
+        ? <IonContent>
+            {
+                facts.map(f => {
+                    return (<Fact key={f.id} title={`Fact #${f.id}`} flavorText={f.flavor_text}>
+                        <Modal title={`Fact #${f.id}`} button="View Data">
+                            <IonList>
+                                {f.data.map((d, index) =>
+                                    <IonItem key={index}>
+                                        <IonLabel>{d.data_key}</IonLabel>
+                                        <IonNote slot="end" color="primary">{d.data_value}</IonNote>
+                                    </IonItem>
+                                )}
+                            </IonList>
+                        </Modal>
+                    </Fact>);
+                })
+            }
+        </IonContent>
+        : <></>;
 };
 
 export default Facts;
