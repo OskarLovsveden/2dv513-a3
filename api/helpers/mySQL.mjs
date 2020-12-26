@@ -15,7 +15,6 @@ const getDBConnection = async () => new Promise(
 				reject(err)
 				return
 			}
-			console.log('connected as id ' + connection.threadId)
 			resolve(connection)
 		})
 	})

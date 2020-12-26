@@ -1,6 +1,8 @@
 import axios from 'axios'
 import { query } from './helpers/mySQL.mjs'
 
+import ora from 'ora';
+
 const url = 'https://swapi.dev/api/'
 
 const sqlArr = [
@@ -38,17 +40,14 @@ export const importData = async () => {
 	for (const sa of sqlArr) {
 		await query(sa)
 	}
-	console.log('Created tables')
 
 	const films = await getFilms()
 	const planets = await getPlanets()
 	const species = await getSpecies()
 	const people = await getPeople()
 	const appearsIn = getAppearsIn(people, films)
-	console.log('Fetched data')
 
 	putInDB(films, planets, species, people, appearsIn)
-	console.log('Put data in DB');
 }
 
 const putInDB = async (films, planets, species, people, appearsIn) => {
@@ -157,3 +156,4 @@ const getAppearsIn = (people, films) => {
 	return episodeAndCharacters
 }
 
+ora.promise(importData(), 'Importing Data').start()
