@@ -7,7 +7,7 @@ const params = {
 	database: 'starwars'
 }
 
-export const getDBConnection = async () => new Promise(
+const getDBConnection = async () => new Promise(
 	(resolve, reject) => {
 		const connection = mysql.createConnection(params)
 		connection.connect(err => {

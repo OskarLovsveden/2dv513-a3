@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { getDBConnection } from './helpers/mySQL.mjs'
+import { query } from './helpers/mySQL.mjs'
 
 const url = 'https://swapi.dev/api/'
 
@@ -35,18 +35,23 @@ const sqlArr = [
 ]
 
 export const importData = async () => {
-	createTable(sqlArr)
+	for (const sa of sqlArr) {
+		await query(sa)
+	}
+	console.log('Created tables')
 
 	const films = await getFilms()
 	const planets = await getPlanets()
 	const species = await getSpecies()
 	const people = await getPeople()
 	const appearsIn = getAppearsIn(people, films)
+	console.log('Fetched data')
 
 	putInDB(films, planets, species, people, appearsIn)
+	console.log('Put data in DB');
 }
 
-const putInDB = (films, planets, species, people, appearsIn) => {
+const putInDB = async (films, planets, species, people, appearsIn) => {
 	const movieSQL = 'INSERT INTO movie (name, release_date, id) VALUES ?'
 	films = films.map(f => [f[0], f[1], f[2]])
 
@@ -58,49 +63,19 @@ const putInDB = (films, planets, species, people, appearsIn) => {
 	const charSQL =
 		'INSERT INTO movie_character (name, birth_planet, species) VALUES ?'
 	people = people.map(f => [f[0], f[1], f[2]])
-	console.table(people)
 
 	const aiSQL = 'INSERT INTO appears_in (character_name, movie_id) VALUES ?'
 
-	// Will only work if run on at a time
-	queryIntoDB(movieSQL, films)
-	queryIntoDB(planetSQL, planets)
-	queryIntoDB(speciesSQL, species)
-	queryIntoDB(charSQL, people)
-	queryIntoDB(aiSQL, appearsIn)
-}
-
-const queryIntoDB = (sql, array) => {
-	const connection = getDBConnection()
-
-	connection.query(sql, [array], err => {
-		if (err) {
-			console.log(err)
-		}
-	})
-
-	connection.end(err => {
-		if (err) {
-			console.log(err)
-		}
-	})
-}
-
-const createTable = async sqlArr => {
-	const connection = getDBConnection()
-
-	sqlArr.forEach(sa => query(sa, connection))
-
-	connection.end(err => {
-		if (err) {
-			console.log(err)
-		}
-	})
+	await query(movieSQL, [films])
+	await query(planetSQL, [planets])
+	await query(speciesSQL, [species])
+	await query(charSQL, [people])
+	await query(aiSQL, [appearsIn])
 }
 
 const getPeople = async () => {
 	let peopleURL = `${url}people/`
-	let mahPeople = []
+	let people = []
 
 	do {
 		const {
@@ -108,24 +83,17 @@ const getPeople = async () => {
 		} = await axios.get(peopleURL)
 
 		results.forEach(p =>
-			mahPeople.push([p.name, p.homeworld, p.species[0], p.url])
+			people.push([p.name, p.homeworld, p.species[0], p.url])
 		)
 		peopleURL = next
 	} while (peopleURL)
 
-	await Promise.all(
-		mahPeople.map(async p => {
-			p[1] = (await axios.get(p[1])).data.name
-			return p
-		})
-	)
+	for (const p of people) {
+		p[1] = (await axios.get(p[1])).data.name
+		p[2] = p[2] ? (await axios.get(p[2])).data.name : 'Human'
+	}
 
-	return Promise.all(
-		mahPeople.map(async p => {
-			p[2] = p[2] ? (await axios.get(p[2])).data.name : 'Human'
-			return p
-		})
-	)
+	return people
 }
 
 const getPlanets = async () => {

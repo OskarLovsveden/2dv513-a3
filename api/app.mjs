@@ -7,6 +7,14 @@ import funFactRouter from './routes/funFactRouter.mjs'
 import express from 'express'
 import cors from 'cors'
 
+import { importData } from './dataImporter.mjs'
+
+try {
+	// importData()
+} catch (error) {
+	console.log(error)
+}
+
 const app = express()
 const port = 3000
 
