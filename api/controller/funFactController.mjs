@@ -47,16 +47,6 @@ const getFactThree = async () => {
 	}
 }
 
-const viewCharactersNotBornOnTheirSpeciesHomePlanet = async () => {
-	const sql = `CREATE OR REPLACE VIEW characters_not_born_on_their_species_home_planet AS
-	SELECT m.name AS character_name, m.birth_planet AS character_birth_planet
-	FROM movie_character m
-	JOIN species s ON s.name = m.species
-	WHERE m.birth_planet != s.home_planet`
-
-	return query(sql)
-}
-
 const viewCharactersMovieAppearancesDescending = () => {
 	const sql = `CREATE OR REPLACE VIEW characters_movie_appearances_descending AS
 	SELECT character_name, COUNT(character_name) AS movie_appearances 
@@ -90,23 +80,8 @@ const viewMostCommonBirthPlanetsCharactersAppearances = () => {
 	return query(sql)
 }
 
-const charactersNotBornOnTheirSpeciesHomePlanet = () => {
-	const sql = `SELECT * FROM characters_not_born_on_their_species_home_planet`
-	return query(sql)
-}
-
 const mostCommonBirthPlanetsCharactersAppearances = () => {
 	const sql = `SELECT * FROM most_common_birth_planets_characters_appearances`
-	return query(sql)
-}
-
-const viewSpeciesAppearancesCounted = () => {
-	const sql = `CREATE OR REPLACE VIEW species_appearances_counted AS
-	SELECT species, COUNT(species) AS character_amount
-	FROM movie_character 
-	GROUP BY species
-	ORDER BY COUNT(species) DESC`
-
 	return query(sql)
 }
 
@@ -120,11 +95,35 @@ const mostCommonBirthPlanet = () => {
 	return query(sql)
 }
 
+const viewSpeciesAppearancesCounted = () => {
+	const sql = `CREATE OR REPLACE VIEW species_appearances_counted AS
+	SELECT species, COUNT(species) AS character_amount
+	FROM movie_character 
+	GROUP BY species
+	ORDER BY COUNT(species) DESC`
+
+	return query(sql)
+}
+
 const speciesAppearancesCounted = () => {
 	const sql = `SELECT * FROM species_appearances_counted`
 
 	return query(sql)
 }
 
+const viewCharactersNotBornOnTheirSpeciesHomePlanet = async () => {
+	const sql = `CREATE OR REPLACE VIEW characters_not_born_on_their_species_home_planet AS
+	SELECT m.name AS character_name, m.birth_planet AS character_birth_planet
+	FROM movie_character m
+	JOIN species s ON s.name = m.species
+	WHERE m.birth_planet != s.home_planet`
+
+	return query(sql)
+}
+
+const charactersNotBornOnTheirSpeciesHomePlanet = () => {
+	const sql = `SELECT * FROM characters_not_born_on_their_species_home_planet`
+	return query(sql)
+}
 
 export default funFactController
